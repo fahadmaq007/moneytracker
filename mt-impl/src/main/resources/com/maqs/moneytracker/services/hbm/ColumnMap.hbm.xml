@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	
+	<class name="com.maqs.moneytracker.model.ColumnMap" table="bnk_stmnt_col_map">
+		<meta attribute="class-description">This class contains ColumnMap details.</meta>
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+
+		<property name="bankStatementId" type="long" column="BNK_STMNT_ID" />
+		
+		<property name="propertyName" type="string" column="PROP_NAME" />
+		
+		<property name="columnName" type="string" column="COL_NAME" />
+		
+		<property name="dataType" type="string" column="DATA_TYPE" />
+		
+		<property name="userId" type="long" column="user_id" />
+		<!-- <property name="createdOn" type="timestamp"  column="CREATED_DATE" />
+		
+		<property name="lastModifiedOn" type="timestamp"  column="MODIFIED_DATE" /> -->
+	</class>
+	
+</hibernate-mapping>

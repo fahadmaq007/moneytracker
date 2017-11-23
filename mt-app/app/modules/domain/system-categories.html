@@ -1,0 +1,73 @@
+<div ng-init="initSystemCategories()">
+<table ng-table="sysCatTableParams" class="table table-bordered table-hover table-condensed">
+<thead>
+<tr>
+    <th class="sortable" style="text-align: center" ng-class="{
+        'sort-asc': catTableParams.isSortBy('name', 'asc'),
+        'sort-desc': catTableParams.isSortBy('name', 'desc')
+      }"
+        ng-click="catTableParams.sorting({'name' : catTableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
+        <div><i class="glyphicon glyphicon-align-justify"></i> Name</div>
+    </th>
+    <th class="sortable" style="text-align: center" ng-class="{
+        'sort-asc': catTableParams.isSortBy('transactionTypeCode', 'asc'),
+        'sort-desc': catTableParams.isSortBy('transactionTypeCode', 'desc')
+      }"
+        ng-click="catTableParams.sorting({'transactionTypeCode' : catTableParams.isSortBy('transactionTypeCode', 'asc') ? 'desc' : 'asc'})">
+        <div><i class="fa fa-tag"></i> Transaction Type</div>
+    </th>
+
+    <th style="text-align: center">
+        <div><i class="fa fa-university"></i>Default Account</div>
+    </th>
+
+  </tr>
+ </thead>
+  <tbody ng-repeat="c in systemCategories" ng-init="c.$$hideRows = true">
+    <tr id="tr{{c.id}}" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+     <td data-title="'Category'" style="text-align: left; width: 30%">
+      <button ng-if="c.children && c.children.length > 0" class="btn-text btn-default btn-sm" ng-click="c.$$hideRows = !c.$$hideRows" tooltip="{{getTooltip(c)}}">
+          <span class="fa" ng-class="{ 'fa fa-chevron-right': c.$$hideRows, 'fa fa-chevron-down': !c.$$hideRows }"></span>
+      </button>
+      <span>
+        {{c.name}}
+      </span>
+    </td>
+    <td data-title="'Transaction Type'" style="text-align: left; width: 30%">
+      <span ng-class="{expense:c.transactionTypeCode== 'E', income:c.transactionTypeCode == 'I', transfer:c.transactionTypeCode == 'T'}">
+        {{c.transactionType.name}}
+      </span>
+    </td>
+
+    <td style="text-align: left; width: 25%" data-title="'Default Account'">
+      <span ng-init="setCategoryDefaultAccount(c)">{{c.defaultAccount.name}}</span>
+    </td>
+
+  </tr>
+
+  <tr ng-hide="c.$$hideRows" id="tr{{child.id}}" ng-repeat="child in c.children" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+    <td data-title="'Category'" style="text-align: left; width: 30%">
+     <button ng-if="child.children" class="btn-text btn-default btn-sm" ng-click="child.$$hideRows = !child.$$hideRows" tooltip="{{getTooltip(c)}}">
+         <span class="fa" ng-class="{ 'fa fa-chevron-right': child.$$hideRows, 'fa fa-chevron-down': !child.$$hideRows }"></span>
+     </button>
+     <span id="expanded-data">
+      {{child.name}}
+     </span>
+     
+   </td>
+
+   <td data-title="'Transaction Type'" style="text-align: left; width: 30%">
+     <span ng-class="{expense:child.transactionTypeCode== 'E', income:child.transactionTypeCode == 'I', transfer:child.transactionTypeCode == 'T'}">
+       {{child.transactionType.name}}
+     </span>     
+   </td>
+   <td style="text-align: left; width: 25%" data-title="'Default Account'">
+     <span ng-init="setCategoryDefaultAccount(child)">{{child.defaultAccount.name}}</span>     
+   </td>
+    <td  style="text-align: left; width: 15%">
+       
+    </td>
+  </tr>
+  </tbody>
+</table>
+</div>

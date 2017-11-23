@@ -1,0 +1,104 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	
+	<context:property-placeholder
+		location="classpath:com/maqs/moneytracker/services/conf/hibernate.properties,
+		file:${mt_home}/config/settings.properties" />
+	
+	<context:component-scan base-package="com.maqs.moneytracker.services,com.maqs.moneytracker.security" />
+	
+	<bean id="tokenManager" class="com.maqs.moneytracker.security.TokenManagerImpl">
+	</bean>
+	
+	<bean id="log4jInitialization"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass"
+			value="org.springframework.util.Log4jConfigurer" />
+		<property name="targetMethod" value="initLogging" />
+		<property name="arguments">
+			<list>
+				<value>file:${log4j.path}</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="mappingLocations" class="java.util.ArrayList">
+	    <constructor-arg>
+	        <list>
+	            <value>classpath:/com/maqs/moneytracker/services/hbm/*hbm.xml</value>            
+	        </list>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="user">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+
+		<property name="dataSourceName" value="${applicationName}" />
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="idleConnectionTestPeriod" value="3000" />
+		<property name="loginTimeout" value="300" />
+		<property name="maxIdleTime" value="100" />
+		<property name="preferredTestQuery" value="select 1;" />
+	</bean> 
+	
+	<import resource="classpath:conf/core-beans.xml" />
+
+	<!-- Advisor pointcut definition for before advice -->
+	<bean id="timeLoggingAroundAdvisor"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="timeLoggingAdvice" />
+		</property>
+		<property name="pattern">
+			<value>.*</value>
+		</property>
+	</bean>
+
+	<!-- Advice classes -->
+	<bean id="timeLoggingAdvice"
+		class="com.maqs.moneytracker.server.core.interceptor.TimeLoggingInterceptor" />
+
+		<!-- Advisor pointcut definition for before advice -->
+	<bean id="exceptionLoggingAroundAdvisor"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="exceptionLoggingAdvice" />
+		</property>
+		<property name="pattern">
+			<value>.*</value>
+		</property>
+	</bean>
+
+	<!-- Advice classes -->
+	<bean id="exceptionLoggingAdvice"
+		class="com.maqs.moneytracker.server.core.interceptor.ExceptionLoggingInterceptor" />
+	
+	<bean id="persistenceExceptionTranslationPostProcessor"
+      class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+</beans>

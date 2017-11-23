@@ -1,0 +1,29 @@
+<!-- <form id="form_tr_search" name="form_tr_search" novalidate> -->
+<div class="row">
+  <div class="col-xs-12 col-sm-4 col-lg-2">
+    <div class="input-group">
+      <a href="" class="input-group-addon" ng-click="prevMonth()"><i class="fa fa-arrow-left" tooltip="Go to previous month"></i></a>
+      <div class="input-group">
+        <input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.fromDate" min-date="minDate" is-open="$parent.fromDateOpened"
+        close-text="Close" ng-click="openFromDate($event)" placeholder="From Date">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-4 col-lg-2">
+    <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <div class="input-group" id="to">
+        <input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.toDate" min-date="searchDto.fromDate" is-open="$parent.toDateOpened"
+        close-text="Close" ng-click="openToDate($event)" >
+        <a href="" class="input-group-addon" ng-click="nextMonth()"><i class="fa fa-arrow-right" tooltip="Go to next month"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-4 col-lg-2">
+    <button class="btn btn-primary btn-lg" ng-click="showReport()" busy="{{busyMessage}}" busy-when-url="budgetedvsspentreport">
+      Load Dashboard
+    </button>
+  </div>
+</div>
+<!-- </form> -->

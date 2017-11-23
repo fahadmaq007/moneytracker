@@ -1,0 +1,97 @@
+<div>
+  <!-- <div ng-include="'action.html'" /> -->
+  <div class="row">
+    <div style="float:left;" class="col-xs-12 col-sm-5 col-lg-5">
+      <div class="row">
+        <div style="float:right;" class="col-xs-12 col-sm-12 col-lg-12">
+          Select one below or <span editable-text="newBankStatementName" onbeforesave="createNewBankStatement($data)">{{ newBankStatementName || 'Create here' }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+       <div class="input-group" style="padding-bottom: 10px;">
+        <span class="input-group-addon" style="width: 40%">Statement</span>
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="statementDropdown" role="button" data-toggle="dropdown" data-target="#" href="">
+            <div class="input-group">
+              <select ui-select2="select2Options" class="form-control" ng-model="selectedStatement.id" ng-change="statementChanged(selectedStatement)" id="bankStatement" ng-disabled="newBankStatementName">
+                <option ng-repeat="b in bankStatements" value="{{b.id}}">{{b.name}}
+                </option>
+              </select>
+            </div>
+          </a>
+        </div>
+       </div>
+      </div>
+
+      <div class="row">
+       <div class="input-group" style="padding-bottom: 10px;">
+        <span class="input-group-addon" style="width: 40%">Account</span>
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown" data-target="#" href="">
+            <div class="input-group">
+              <select id="account"
+                 ui-select2
+                 name="account" class="form-control" ng-model="selectedStatement.bankAccountId" ng-change="accountChanged(selectedStatement)" required>
+                 <option ng-repeat="a in accounts | orderBy:'name'" id="{{a.id}}" value="{{a.id}}">{{a.name}}</option>
+             </select>
+            </div>
+          </a>
+         </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group" style="padding-bottom: 10px;">
+        <span class="input-group-addon" style="width: 40%">Start Row</span>
+         <div class="dropdown">
+          <a class="dropdown-toggle" id="startRow">
+            <div class="input-group">
+             <input id="startRowInput" name="startRowInput" class="form-control" type="number" ng-model="selectedStatement.startRow" ng-change="statementDetailsChanged(selectedStatement)" required />
+            </div>
+          </a>
+         </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group" style="padding-bottom: 10px;">
+         <span class="input-group-addon" style="width: 40%">Date Format</span>
+         <div class="dropdown">
+          <a class="dropdown-toggle" id="dateFormat">
+            <div class="input-group">
+             <input id="startRowInput" name="dateFormatInput" class="form-control" type="text" ng-model="selectedStatement.dateFormat" ng-change="statementDetailsChanged(selectedStatement)" required />
+            </div>
+          </a>
+         </div>
+        </div>
+      </div>
+      
+      <div class="row" style="padding-bottom: 10px">
+          <button type="submit" class="btn btn-primary btn-lg" ng-click="save()">
+            Save {{selectedStatement.name}} Statement
+          </button>  
+      </div>
+
+      <div class="row">
+        <button type="submit" class="btn btn-danger btn-lg" ng-click="deleteStatement(selectedStatement)">
+          Delete {{selectedStatement.name}} Statement
+        </button>
+      </div> 
+   </div>
+   <div class="col-xs-12 col-sm-1 col-lg-1"></div>
+   <div class="col-xs-12 col-sm-6 col-lg-6">
+      <div ng-include="'modules/bankstatements/columnmap.html'" />
+   </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+        <div ng-include="'modules/bankstatements/datamap.html'" />
+     </div>
+  </div>  
+</div>
+
+<script type="text/ng-template" id="action.html">
+  
+</script>

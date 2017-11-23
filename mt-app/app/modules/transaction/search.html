@@ -1,0 +1,72 @@
+<!-- <form id="form_tr_search" name="form_tr_search" novalidate> -->
+<div class="contentPanel">
+  <div class="row">
+    <div class="col-xs-6 col-sm-4 col-lg-2">
+      <div class="input-group">
+        <a href="" class="input-group-addon" ng-click="prevMonth()"><i class="fa fa-arrow-left" tooltip="Previous"></i></a>
+        <div class="input-group">
+          <input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.fromDate" min-date="minDate" is-open="$parent.fromDateOpened"
+          close-text="Close" ng-click="openFromDate($event)">
+          <span class="input-group-addon hidden-xs"><i class="fa fa-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6 col-sm-4 col-lg-2">
+      <div class="input-group">
+        <span class="input-group-addon hidden-xs"><i class="fa fa-calendar"></i></span>
+        <div class="input-group" id="to">
+          <input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.toDate" min-date="searchDto.fromDate" is-open="$parent.toDateOpened"
+          close-text="Close" ng-click="openToDate($event)">
+          <a href="" class="input-group-addon" ng-click="nextMonth()"><i class="fa fa-arrow-right" tooltip="Next"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-lg-2">
+      <div class="input-group" tooltip="Select Accounts">
+        <span class="input-group-addon"><i class="fa fa-university"></i></span>
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown" data-target="#" href="">
+            <div class="input-group">
+              <select ui-select2="select2Options" multiple class="form-control" ng-model="searchDto.accountIds" ng-change='accountChanged(searchDto.accountIds)' id="source" style="width:100%" required>
+              <option ng-repeat="a in accounts" value="{{a.id}}">{{a.name}}</option>
+            </select>
+            <!-- <span class="input-group-addon" ng-if="searchDto.categoryIds.length>0" ng-click="searchDto.categoryIds = []">Clear</span> -->
+            <a href="" class="input-group-addon" ng-if="searchDto.accountIds.length>0" ng-click="searchDto.accountIds = []"><i class="glyphicon glyphicon-remove-sign"></i>
+          </a>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-8 col-lg-4">
+      <div class="input-group" tooltip="Select Categories">
+        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="categoryDropdown" role="button" data-toggle="dropdown" data-target="#" href="">
+            <div class="input-group">
+              <select ui-select2="select2Options" multiple class="form-control" ng-model="searchDto.categoryIds" ng-change='selectedCategory(searchDto.categoryIds)' id="source" style="width:100%">
+              <optgroup label="Expense">
+                  <option ng-repeat="cat in expCategories" value="{{cat.id}}">{{cat.name}}
+                  </option>
+              </optgroup>
+              <optgroup label="Income">
+                  <option ng-repeat="cat in incCategories" value="{{cat.id}}">{{cat.name}}
+                  </option>
+              </optgroup>
+            </select>
+            <!-- <span class="input-group-addon" ng-if="searchDto.categoryIds.length>0" ng-click="searchDto.categoryIds = []">Clear</span> -->
+            <a href="" class="input-group-addon" ng-if="searchDto.categoryIds.length>0" ng-click="searchDto.categoryIds = []"><i class="glyphicon glyphicon-remove-sign"></i>
+          </a>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-2 col-lg-2">
+      <button class="btn btn-primary btn-lg"  busy="{{busyMessage}}" busy-when-url="incomeexpensetotal" ng-click="search()"><i class="fa fa-search-plus"></i> Show Transactions
+      </button>
+    </div>
+  </div>
+</div>
+<!-- </form> -->

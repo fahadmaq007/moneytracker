@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-xs-4 col-sm-2 col-lg-2" style="padding-left: 0px">
+    <button class="btn btn-success btn-lg" ng-click="add()"
+    tooltip="Add a new Transaction">
+      <i class="fa fa-plus-circle"></i> New
+    </button>
+  </div>
+  <div class="col-xs-4 col-sm-2 col-lg-2">
+    <button class="btn btn-success btn-lg" ng-click="addToCurrentMonth()" ng-disabled="isCurrentMonth || selectedTransactions.length <= 0" 
+    tooltip="Add the selected transaction(s) to Current Month">
+      <i class="fa fa-plus-circle"></i> To Current
+      <span ng-hide="isCurrentMonth || selectedTransactions.length <= 0" class="badge hidden-xs">{{selectedTransactions.length}}</span>
+    </button>
+  </div>
+  <div class="col-xs-4 col-sm-2 col-lg-2">
+      <button class="btn btn-default btn-lg" ng-disabled="selectedTransactions.length <= 0" tooltip="Duplicate selected Transaction(s)"
+      ng-click="duplicateAll()">
+        <i class="fa fa-files-o"></i> Duplicate  
+        <span ng-if="selectedTransactions.length > 0" class="badge hidden-xs">{{selectedTransactions.length}}</span>
+      </button>
+  </div>
+  <div class="col-xs-4 col-sm-2 col-lg-2">
+      <button class="btn btn-danger btn-lg" ng-disabled="selectedTransactions.length <= 0" tooltip="Delete selected Transaction(s)"
+      ng-click="deleteAll()">
+        <i class="fa fa-trash"></i> Delete 
+        <span ng-if="selectedTransactions.length > 0" class="badge hidden-xs">{{selectedTransactions.length}}</span>
+      </button>
+  </div>
+  
+  <div class="col-xs-4 col-sm-2 col-lg-2">
+      <button class="btn btn-primary btn-lg" ng-click="saveAll()" busy="Please wait..." busy-when-url="store" ng-disabled="!(storeList.length > 0 && form_tr.$valid)" >
+        <i class="fa fa-floppy-o"></i> Save
+        <!-- <span ng-if="storeList.length > 0" class="badge">{{storeList.length}}</span> -->
+      </button>
+  </div>
+  <div class="col-xs-4 col-sm-2 col-lg-2" style="padding-right: 0px">
+      <button class="btn btn-warning btn-lg" 
+      ng-click="cancel()">
+        <i class="fa fa-times"></i> Cancel
+      </button>
+  </div>    
+</div>

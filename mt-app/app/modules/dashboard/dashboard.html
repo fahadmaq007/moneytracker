@@ -1,0 +1,30 @@
+<div class="contentPanel" ng-init="init()">
+    <div class="row" style="padding-top: 5px">
+     <div class="col-xs-12 col-sm-12 col-lg-12">
+       <h2 class="h1">Dashboard</h2>
+       <hr/>
+     </div>
+    </div>
+
+    <div ng-include="'modules/dashboard/search.html'"></div>
+    <div class="padding6"></div>
+    <div ng-include="'modules/dashboard/setupprogress.html'"></div>
+    <div class="padding6"></div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-lg-6">
+      	<div class="article scrollArea" style="height: 500px">
+         <!-- <div ng-include="'modules/dashboard/transaction-stats.html'"/> -->
+          <div ng-include="'modules/dashboard/transaction-chart.html'">
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12  col-lg-6">
+        <div class="article scrollArea" style="height: 500px">
+           <div ng-include="'modules/budget/budget-report.html'" ng-controller="BudgetController" ng-init="init()"/>
+          </div>
+        </div>
+     </div>
+   </div> <!-- end of row-->
+
+   <div class="padding10">  </div>
+</div>

@@ -1,0 +1,150 @@
+<div>
+ <div class="modal-header">
+  <h2 class="modal-title">
+    Transaction Details
+  </h2>
+ </div>
+ <form name="transactionDialog" novalidate role="form">
+ <div class="modal-body">
+  <div class="row" style="padding-bottom: 10px">
+   <div class="col-xs-12 col-sm-12 col-lg-12" style="text-align: center">
+    <div class="btn-group" role="group" aria-label="..." style="width: 100%;">
+      <button type="button" class="btn btn-default row-padding" style="width: 33.33%; height: 34px" ng-repeat="type in $types" ng-click="changeType(type)" class="btn btn-default" ng-class="{'active': $type == type.name}">{{type.name}}</button>
+    </div>
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-7 col-sm-7 col-lg-7">
+    <div class="form-group input-group">
+      <span class="input-group-addon" style="width: 35%">
+        Date
+      </span>
+      <input id="t{{t.id}}onDate" type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="t.onDate" min-date="minDate" max-date="today" is-open="t.$$dateOpened" close-text="Close" focus ng-click="openDate($event, t)" ng-change="tranChanged(t)" required datepicker-options="dateOptions" >
+      <span class="input-group-addon" style="width: 25px">
+        <i class="fa fa-calendar"></i>
+     </span>
+    </div>
+   </div>
+
+   <div class="col-xs-4 col-sm-4 col-lg-4">
+    <div class="form-group input-group">
+      <span class="input-group-addon" style="width: 40%">
+        <i ng-class="{'glyphicon glyphicon-check': t.$$recurring, 'glyphicon glyphicon-unchecked': !t.$$recurring}" ng-click="t.$$recurring = !t.$$recurring"></i>
+        Recurring?
+      </span>
+      <select ng-disabled="!t.$$recurring" id="category"
+       ui-select2
+       name="category" class="form-control" ng-model="t.categoryId" ng-change="categoryChanged(t)" required>
+       <option ng-repeat="c in categories | orderBy:'displayName'" id="{{c.id}}" value="{{c.id}}">{{c.displayName}}</option>
+      </select>
+    </div>
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-7 col-sm-7 col-lg-7">
+    <div class="form-group input-group" ng-if="$type != 'Transfer'">
+      <span class="input-group-addon" style="width: 35%">
+        Category
+      </span>
+     <select id="category"
+       ui-select2
+       name="category" class="form-control" ng-model="t.categoryId" ng-change="categoryChanged(t)" required>
+       <option ng-if="$type == 'Expense'" ng-repeat="c in expCategories | orderBy:'displayName'" id="{{c.id}}" value="{{c.id}}">{{c.displayName}}</option>
+
+       <option ng-if="$type == 'Income'" ng-repeat="c in incCategories | orderBy:'displayName'" id="{{c.id}}" value="{{c.id}}">{{c.displayName}}</option>
+     </select>
+     <span class="input-group-addon" style="width: 25px">
+        <i class="fa fa-tag"></i>
+     </span>
+    </div>
+
+    <div class="form-group input-group" ng-if="$type == 'Transfer'">
+      <span class="input-group-addon" style="width: 35%">
+        From Account
+      </span>
+      <select id="account"
+         ui-select2
+         name="account" class="form-control" ng-model="t.fromAccountId" ng-change="accountChanged(t)" required>
+         <option ng-repeat="a in accounts | orderBy:'name'" id="{{a.id}}" value="{{a.id}}">{{a.name}}</option>
+      </select>
+      <span class="input-group-addon" style="width: 25px">
+        <i class="fa fa-university"></i>
+      </span>
+    </div>
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-7 col-sm-7 col-lg-7">
+    <div class="form-group input-group">
+      <span class="input-group-addon" style="width: 35%">
+        Account
+      </span>
+      <select id="account"
+         ui-select2
+         name="account" class="form-control" ng-model="t.accountId" ng-change="accountChanged(t)" required>
+         <option ng-repeat="a in accounts | orderBy:'name'" id="{{a.id}}" value="{{a.id}}">{{a.name}}</option>
+      </select>
+      <span class="input-group-addon" style="width: 25px">
+        <i class="fa fa-university"></i>
+      </span>
+    </div>
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-7 col-sm-7 col-lg-7">
+    <div class="form-group input-group">
+      <span class="input-group-addon" style="width: 35%">
+        Amount
+      </span>
+      <input id="t{{t.id}}_amount" name="t{{t.id}}_amount" class="form-control" type="number" ng-model="t.amount" ng-change="tranChanged(t)" required />
+      <span class="input-group-addon" style="width: 25px">
+        <i class="{{defaultCurrencyClass}}"></i>
+      </span>
+    </div>
+   </div>
+
+   <div class="col-xs-4 col-sm-4 col-lg-4">
+    <div class="form-group input-group">
+      <span class="input-group-addon" style="width: 40%">
+        <i ng-class="{'glyphicon glyphicon-check': t.$$split, 'glyphicon glyphicon-unchecked': !t.$$split}" ng-click="t.$$split = !t.$$split"></i>
+        Split in Months?
+      </span>
+      <input ng-disabled="!t.$$split" id="t{{t.id}}_splitInto" name="t{{t.id}}_splitInto" class="form-control" type="number" ng-model="t.$$splitInto" min="2" max="12" />
+    </div>
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-7 col-sm-7 col-lg-7">
+    <div class="form-group input-group">
+      <span class="input-group-addon" style="width: 35%">
+        Description
+      </span>
+      <input id="t{{t.id}}desc" class="form-control" type="text" ng-model="t.description"  ng-change="tranChanged(t)" />
+      <span class="input-group-addon" style="width: 25px">
+        <i class="fa fa-align-justify"></i>
+      </span>
+    </div>
+   </div>
+  </div>
+
+ </div> <!-- end of body-->
+</form>
+
+ <div class="modal-footer">
+  <div class="row">
+   <div class="col-xs-7 col-sm-7 col-lg-7"></div>
+   <div class="col-xs-2 col-sm-2 col-lg-2">
+    <button type="button" class="btn btn-text btn-lg" ng-click="cancel(t)">Cancel</button>
+   </div>
+   <div class="col-xs-3 col-sm-3 col-lg-3">
+    <button type="button" class="btn btn-primary btn-lg" ng-click="save()" >Save</button>
+   </div>
+  </div>
+ </div>
+<!-- ng-disabled="(transactionDialog.$dirty && transactionDialog.$invalid) || transactionDialog.$pristine" -->
+</div>

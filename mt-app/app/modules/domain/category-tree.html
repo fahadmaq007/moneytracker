@@ -1,0 +1,212 @@
+<div ng-if="categoryTree.length == 0">
+  <div class="row" style="text-align: center">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <span class="error-message padding20">
+        Categories Bucket seems to be empty. <br><br>
+
+        Click on the 
+        <button class="btn btn-success btn-sm circle" ng-click="addCategory()">
+          <i class="fa fa-plus"></i>
+        </button> to add a new category.<br><br>
+
+        You can also import from a list of System defined categories, click on the 
+        <button class="btn btn-default btn-sm circle" ng-click="showSystemCategories()">
+          <i class="fa fa-download"></i>
+        </button> icon to do so.
+      </span>
+    </div>
+  </div>
+</div>
+<div ng-show="categoryTree.length > 0">
+  <form id="form_cat" name="form_cat" novalidate>
+    <table ng-table="catTableParams" class="table table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+          <th class="sortable" style="text-align: center" ng-class="{
+              'sort-asc': catTableParams.isSortBy('name', 'asc'),
+              'sort-desc': catTableParams.isSortBy('name', 'desc')
+            }"
+              ng-click="catTableParams.sorting({'name' : catTableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
+              <div><i class="glyphicon glyphicon-align-justify"></i> Name</div>
+          </th>
+          <th class="sortable" style="text-align: center" ng-class="{
+              'sort-asc': catTableParams.isSortBy('transactionTypeCode', 'asc'),
+              'sort-desc': catTableParams.isSortBy('transactionTypeCode', 'desc')
+            }"
+              ng-click="catTableParams.sorting({'transactionTypeCode' : catTableParams.isSortBy('transactionTypeCode', 'asc') ? 'desc' : 'asc'})">
+              <div><i class="fa fa-tag"></i> Transaction Type</div>
+          </th>
+
+          <th style="text-align: center">
+              <div><i class="fa fa-university"></i>Default Account</div>
+          </th>
+
+          <th style="text-align: left;">
+            <div class="buttons">
+              <button class="btn btn-success btn-sm circle" ng-click="addCategory()" tooltip="Add Category" shortcut="{'alt+c': addCategory}">
+                <i class="fa fa-plus"></i>
+              </button>
+
+              <button class="btn btn-default btn-sm circle" ng-click="showSystemCategories()" tooltip="Import System Categories" shortcut="{'alt+i': showSystemCategories}">
+                <i class="fa fa-download"></i>
+              </button>
+            </div>
+          </th>
+
+          <th></th>
+      </tr>
+ </thead>
+  <tbody ng-repeat="c in categoryTree" ng-init="c.$$hideRows = true">
+    <tr id="tr{{c.id}}" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+     <td data-title="'Category'" style="text-align: left; width: 30%">
+      <button ng-if="!c.$$edit && c.children && c.children.length > 0" class="btn-text btn-default btn-sm" ng-click="c.$$hideRows = !c.$$hideRows" tooltip="{{getTooltip(c)}}">
+          <span class="fa" ng-class="{ 'fa fa-chevron-right': c.$$hideRows, 'fa fa-chevron-down': !c.$$hideRows }"></span>
+      </button>
+      <span ng-if="!c.$$edit">
+        <a href="" ng-click="editCategory(c)">{{c.name}}</a>
+      </span>
+      <div ng-if="c.$$edit">
+        <input class="form-control" type="text" ng-model="c.name" ng-change="categoryChanged(c)" />
+      </div>
+
+    </td>
+    <td data-title="'Transaction Type'" style="text-align: left; width: 30%">
+      <span ng-if="!c.$$edit" ng-class="{expense:c.transactionTypeCode== 'E', income:c.transactionTypeCode == 'I', transfer:c.transactionTypeCode == 'T'}">
+        {{c.transactionType.name}}</span>
+
+      <div ng-if="c.$$edit">
+       <select id="categoryType"
+          ui-select2 disabled
+          name="categoryType" ng-model="c.transactionTypeCode" ng-change="categoryTypeChanged(c)">
+          <option ng-repeat="t in $types | orderBy:'displayName'" id="{{t.code}}" value="{{t.code}}">{{t.name}}</option>
+      </select>
+     </div>  
+    </td>
+    <td style="text-align: left; width: 25%" data-title="'Default Account'">
+      <span ng-if="!c.$$edit" ng-init="setCategoryDefaultAccount(c)">{{c.defaultAccount.name}}</span>
+      <div ng-if="c.$$edit">
+        <select id="account"
+           ui-select2
+           name="account" ng-model="c.defaultAccountId" ng-change="categoryChanged(c)">
+           <option ng-repeat="a in accounts | orderBy:'displayName'" id="{{a.id}}" value="{{a.id}}">{{a.name}}</option>
+       </select>
+      </div>
+    </td>
+    <td  style="text-align: left; width: 12%">
+      <div class="buttons" ng-if="!c.$$edit">
+        <button ng-if="c.parentCategoryId == null" class="btn btn-success btn-sm circle" ng-click="addChildCategory(c)" tooltip="Add Sub-Category">
+          <i class="fa fa-plus"></i>
+        </button>
+        
+        <button ng-if="!c.children || c.children.length == 0" class="btn btn-danger btn-sm circle" ng-click="deleteCategory(c)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>  
+
+      <div class="buttons" ng-if="c.$$edit">        
+         <button class="btn btn-primary btn-sm circle" ng-click="saveCategory(c)" busy="..." busy-when-url="categories" >
+          <i class="fa fa-check"></i>
+        </button>
+
+        <button class="btn btn-warning btn-sm circle" ng-click="cancelCategory(c)">
+          <i class="fa fa-remove"></i>
+        </button>
+      </div>
+    </td>
+    <td  style="text-align: left; width: 8%">
+      <div ng-if="c.message">
+        <div ng-if="c.messageType == 'err' || c.messageType == 'warn'">
+          <span ng-class="{danger: c.messageType == 'err', warning:c.messageType == 'warn'}">
+            <i tooltip="{{c.message}}" class="fa fa-exclamation-triangle notify"></i>
+          </span>
+        </div> 
+        <div ng-if="c.messageType == 'success'">
+         <span class="success">
+          <i tooltip="Stored Successfully" class="fa fa-check notify"></i>
+         </span>
+        </div> 
+      </div>
+    </td>
+  </tr>
+
+  <tr ng-hide="c.$$hideRows" id="tr{{child.id}}" ng-repeat="child in c.children" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+    <td data-title="'Category'" style="text-align: left; width: 30%">
+     <button ng-if="!child.$$edit && child.children" class="btn-text btn-default btn-sm" ng-click="child.$$hideRows = !child.$$hideRows" tooltip="{{getTooltip(c)}}">
+         <span class="fa" ng-class="{ 'fa fa-chevron-right': child.$$hideRows, 'fa fa-chevron-down': !child.$$hideRows }"></span>
+     </button>
+     <span id="expanded-data" ng-if="!child.$$edit">
+      <a href="" ng-click="editCategory(child)">{{child.name}}</a>
+     </span>
+     <div ng-if="child.$$edit">
+       <input class="form-control" type="text" ng-model="child.name" ng-change="categoryChanged(child)" />
+     </div>
+   </td>
+
+   <td data-title="'Transaction Type'" style="text-align: left; width: 30%">
+     <span ng-if="!child.$$edit" ng-class="{expense:child.transactionTypeCode== 'E', income:child.transactionTypeCode == 'I', transfer:child.transactionTypeCode == 'T'}">
+       {{child.transactionType.name}}
+     </span>
+     <div ng-if="child.$$edit">
+       <select id="childCategoryType"
+          ui-select2 disabled
+          name="childCategoryType" ng-model="child.transactionTypeCode" ng-change="categoryTypeChanged(child)">
+          <option ng-repeat="t in $types | orderBy:'displayName'" id="{{t.code}}" value="{{t.code}}">{{t.name}}</option>
+      </select>
+     </div>
+   </td>
+   <td style="text-align: left; width: 25%" data-title="'Default Account'">
+     <span ng-if="!child.$$edit" ng-init="setCategoryDefaultAccount(child)">{{child.defaultAccount.name}}</span>
+     <div ng-if="child.$$edit">
+       <select id="account"
+          ui-select2
+          name="account" ng-model="child.defaultAccountId" ng-change="categoryChanged(child)">
+          <option ng-repeat="a in accounts | orderBy:'displayName'" id="{{a.id}}" value="{{a.id}}">{{a.name}}</option>
+      </select>
+     </div>
+   </td>
+     <td  style="text-align: left; width: 12%">
+       <div class="buttons" ng-if="!child.$$edit">
+         <button class="btn btn-danger btn-sm circle" ng-click="deleteCategory(child)">
+           <i class="fa fa-trash"></i>
+         </button>
+       </div>
+
+       <div class="buttons" ng-if="child.$$edit">
+        <button class="btn btn-primary btn-sm circle" ng-click="saveCategory(child)" busy="..." busy-when-url="categories" >
+           <i class="fa fa-check"></i>
+        </button>
+
+        <button class="btn btn-warning btn-sm circle" ng-click="cancelCategory(child)">
+           <i class="fa fa-remove"></i>
+        </button>
+       </div> 
+     </td>
+
+     <td style="text-align: left; width: 8%">
+      <div ng-if="child.message">
+        <div ng-if="child.messageType == 'err' || child.messageType == 'warn'">
+          <span ng-class="{danger: child.messageType == 'err', warning:child.messageType == 'warn'}">
+            <i tooltip="{{child.message}}" class="fa fa-exclamation-triangle notify"></i>
+          </span>
+        </div> 
+        <div ng-if="child.messageType == 'success'">
+         <span class="success">
+          <i tooltip="Stored Successfully" class="fa fa-check notify"></i>
+         </span>
+        </div> 
+      </div>
+     </div>
+     </td>
+  </tr>
+  </tbody>
+</table>
+  <div class="row">
+   <div class="col-xs-12 col-sm-12 col-lg-12">
+     <span class="note">Note: <br>
+       1. Click on the Name hyperlink to edit the Category.<br>
+       2. Click on the <i class="fa fa-download"></i> icon to import from System.
+    </span>
+   </div>
+  </div>
+</div>
+

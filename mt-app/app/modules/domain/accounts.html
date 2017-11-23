@@ -1,0 +1,110 @@
+<div class="contentPanel">
+  <div class="row">
+   <div class="col-xs-12 col-sm-12 col-lg-12">
+     <span class="h1">Accounts Manager</span>
+     <hr/>
+   </div>
+  </div>
+  <div ng-if="accountsInitialized && accounts.length == 0">
+    <div class="row" style="text-align: center">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+        <span class="error-message padding20">
+          You haven't created any account yet. It's mandatory to have at least one.<br><br>
+          Click
+          <button class="btn btn-success btn-sm circle" ng-click="addAccount()">
+            <i class="fa fa-plus"></i>
+          </button> to add a new account & start afresh.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="accounts.length > 0">
+   <form id="form_acct" name="form_acct" novalidate>
+   <table ng-table="acctTableParams" class="table table-bordered table-hover table-condensed">
+   <thead>
+    <tr>
+        <th class="sortable" style="text-align: center" ng-class="{
+            'sort-asc': acctTableParams.isSortBy('name', 'asc'),
+            'sort-desc': acctTableParams.isSortBy('name', 'desc')
+          }"
+            ng-click="acctTableParams.sorting({'name' : acctTableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
+            <div><i class="glyphicon glyphicon-align-justify"></i> Name</div>
+        </th>
+        <th class="sortable" style="text-align: center" ng-class="{
+            'sort-asc': acctTableParams.isSortBy('accountTypeCode', 'asc'),
+            'sort-desc': acctTableParams.isSortBy('accountTypeCode', 'desc')
+          }"
+            ng-click="acctTableParams.sorting({'accountTypeCode' : acctTableParams.isSortBy('accountTypeCode', 'asc') ? 'desc' : 'asc'})">
+            <div><i class="fa fa-university"></i> Account Type</div>
+        </th>
+
+        <th class="sortable" style="text-align: center" ng-class="{
+            'sort-asc': acctTableParams.isSortBy('balance', 'asc'),
+            'sort-desc': acctTableParams.isSortBy('balance', 'desc')
+          }"
+            ng-click="acctTableParams.sorting({'balance' : acctTableParams.isSortBy('balance', 'asc') ? 'desc' : 'asc'})">
+            <div>Balance ({{defaultCurrency}})</div>
+        </th>
+
+        <th style="text-align: left;">
+          <div class="buttons">
+            <button class="btn btn-success btn-sm circle" ng-click="addAccount()" tooltip="Add Account" shortcut="{'alt+a': addAccount}">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr id="tr_acct{{a.id}}" ng-repeat="a in accounts" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+    <td style="text-align: left; width: 30%">
+      <span ng-if="!a.$$edit">
+        <a href="" ng-click="editAccount(a)">{{a.name}}</a>
+      </span>
+      <div class="input-group" ng-if="a.$$edit">
+        <input id="acct{{a.id}}_name" name="acct{{a.id}}_name" class="form-control" type="text" ng-model="a.name" ng-change="accountChanged(a)" required />
+      </div>
+    </td>
+
+    <td data-title="'Account Type'" sortable="'a.accountTypeCode'" style="text-align: left; width: 30%">
+      <span ng-if="!a.$$edit">{{a.accountType.name}}</span>
+      <div ng-if="a.$$edit">
+        <select id="accountType"
+           ui-select2
+           name="accountType" class="form-control" ng-model="a.accountTypeCode" ng-change="accountChanged(a)" required>
+           <option value="">--Select one--</option>
+           <option ng-repeat="type in accountTypes" id="{{type.code}}" value="{{type.code}}">{{type.name}}</option>
+       </select>
+      </div>
+    </td>
+    <td style="text-align: right; width: 25%" data-title="'Balance'" sortable="'balance'">
+      <span ng-if="!a.$$edit">{{a.balance | number : 2 }}</span>
+      <div ng-if="a.$$edit">
+        <input id="a{{a.id}}_amount" name="t{{a.id}}_amount" class="form-control" type="number" ng-model="a.balance" ng-change="accountChanged(a)" step="50" required />
+      </div>
+    </td>
+
+    <td  style="text-align: left; width: 15%">
+      <div class="buttons" ng-if="!a.$$edit">
+        <button class="btn btn-danger btn-sm circle" ng-click="deleteAccount(a)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+
+      <div class="buttons" ng-if="a.$$edit">
+        <button class="btn btn-primary btn-sm circle" ng-click="saveAccount(a)" ng-disabled="!form_acct.$pristine && form_acct.$invalid">
+          <i class="fa fa-check"></i>
+        </button>
+
+        <button class="btn btn-warning btn-sm circle" ng-click="cancelAccount(a)">
+          <i class="fa fa-remove"></i>
+        </button>
+      </div>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+   </form>
+  </div>
+</div>

@@ -1,0 +1,231 @@
+<div ng-if="budgetItems && budgetItems.length > 0">
+ <table ng-table="" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+        <th style="text-align: left">
+            <div><i class="glyphicon glyphicon-align-justify"></i> Category</div>
+        </th>
+        <th style="text-align: left">
+            <div><i class="glyphicon glyphicon-home"></i> Period Type</div>
+        </th>
+        <th style="text-align: right">
+            <div>{{defaultCurrency}} Amount</div>
+        </th>
+
+        <th style="text-align: left;">
+          <div class="buttons">
+            <button class="btn btn-success btn-sm circle" ng-click="add()">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </th>
+    </tr>
+  </thead>
+  <tbody ng-repeat="b in budgetItems" ng-init="b.$$hideRows = true">
+    <tr id="tr{{b.id}}" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+     <td data-title="'Category'" style="text-align: left; width: 35%">
+
+      <button ng-if="!b.$$edit && b.children" class="btn-text btn-default btn-sm" ng-click="b.$$hideRows = !b.$$hideRows" tooltip="{{getTooltip(b)}}">
+          <span class="fa" ng-class="{ 'fa fa-chevron-right': b.$$hideRows, 'fa fa-chevron-down': !b.$$hideRows }"></span>
+      </button>
+      <span ng-if="!b.$$edit">
+        <!-- <a href="" ng-click="edit(b)"> -->{{b.category.name}}<!-- </a> -->
+      </span>
+      <!-- <div ng-if="b.$$edit">
+        <select id="category"
+           ui-select2
+           name="category" ng-model="b.categoryId" ng-change="categoryChanged(b)">
+			   <optgroup ng-repeat="c in categoryTree | orderBy:'name'" 
+         	label="{{c.name}}">
+            <option ng-if="c.children" ng-repeat="cat in c.children" value="{{cat.id}}">{{cat.name}}
+            </option>
+            <option ng-if="!c.children" value="{{c.id}}">{{c.name}}
+            </option>
+         </optgroup>
+       </select>
+      </div> -->
+    </td>
+    <td data-title="'Period Type'" style="text-align: left; width: 25%">
+      <span ng-if="!b.$$edit">{{b.period.name}}</span>
+      <!-- <div ng-if="b.$$edit">
+        <select id="category"
+           ui-select2
+           name="periodCode" ng-model="b.periodCode" ng-change="periodChanged(b)">
+           <option ng-repeat="p in periods | orderBy:'name'" id="{{p.code}}" value="{{p.code}}">{{p.name}}</option>
+       </select>
+      </div> -->
+    </td>
+    <td style="text-align: right; width: 25%" data-title="'Amount'" sortable="'amount'">
+      <span ng-if="!b.$$edit" ng-class="{expense:b.category.transactionType.code== 'E', income:b.category.transactionType.code == 'I'}">{{b.amount | number : 2 }}</span>
+      <!-- <div ng-if="b.$$edit">
+        <input class="form-control" type="number" ng-model="b.amount" />
+      </div> -->
+    </td>
+    <td  style="text-align: left; width: 25%">
+      <div class="buttons" ng-if="!b.$$edit">
+        <button ng-if="b.category.parentCategoryId == null" class="btn btn-success btn-sm circle" ng-click="addChild(b)">
+          <i class="fa fa-plus"></i>
+        </button>
+
+        <button class="btn btn-danger btn-sm circle" ng-click="delete(b)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+      <!-- <div class="buttons" ng-if="b.$$edit">
+        <button class="btn btn-primary btn-sm circle" ng-click="saveBudgetItem(b)">
+          <i class="fa fa-check"></i>
+        </button>
+
+        <button class="btn btn-warning btn-sm circle" ng-click="cancel(b)">
+          <i class="fa fa-remove"></i>
+        </button>
+      </div> -->
+    </td>
+  </tr>
+
+  <tr ng-hide="b.$$hideRows" id="tr{{child.id}}" ng-repeat="child in b.children" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+     <td data-title="'Category'" style="text-align: left; width: 25%">
+      <a ng-if="child.children" href="" ng-click="child.$$hideRows = !child.$$hideRows">
+          <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': child.$$hideRows, 'glyphicon-chevron-down': !child.$$hideRows }"></span>
+      </a>
+      <span id="expanded-data" ng-if="!child.$$edit">
+        <a href="" ng-click="edit(child)">
+          {{child.category.name}}
+        </a>
+      </span>
+      <div id="expanded-data" ng-if="child.$$edit">
+        <select id="category"
+           ui-select2
+           name="category" ng-model="child.categoryId" ng-change="categoryChanged(b)">
+           <optgroup ng-repeat="c in categoryTree | orderBy:'name'" 
+          label="{{c.name}}">
+            <option ng-if="c.children" ng-repeat="cat in c.children" value="{{cat.id}}">{{cat.name}}
+            </option>
+            <option ng-if="!c.children" value="{{c.id}}">{{c.name}}
+            </option>
+         </optgroup>
+       </select>
+      </div>
+    </td>
+    <td data-title="'Period Type'" style="text-align: left; width: 25%">
+      <span ng-if="!child.$$edit">{{child.period.name}}</span>
+      <div ng-if="child.$$edit">
+        <select id="category"
+           ui-select2
+           name="periodCode" ng-model="child.periodCode" ng-change="periodChanged(child)">
+           <option ng-repeat="p in periods | orderBy:'name'" id="{{p.code}}" value="{{p.code}}">{{p.name}}</option>
+       </select>
+      </div>
+    </td>
+    <td style="text-align: right; width: 25%" data-title="'Amount'" sortable="'amount'">
+      <span ng-if="!child.$$edit" ng-class="{expense:child.category.transactionType.code== 'E', income:child.category.transactionType.code == 'I'}">{{child.amount | number : 2 }}</span>
+      <div ng-if="child.$$edit">
+        <input class="form-control" type="number" ng-model="child.amount" step="{{defaultNumberStep}}" required />
+      </div>
+    </td>
+    <td  style="text-align: left; width: 25%">
+      <div class="buttons" ng-if="!child.$$edit">
+        <button class="btn btn-danger btn-sm circle" ng-click="delete(child)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+      <div class="buttons" ng-if="child.$$edit">
+        <button class="btn btn-primary btn-sm circle" ng-click="saveBudgetItem(child)">
+          <i class="fa fa-check"></i>
+        </button>
+
+        <button class="btn btn-warning btn-sm circle" ng-click="cancelBudgetItem(child)">
+          <i class="fa fa-remove"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div ng-if="!budgetItems || budgetItems.length == 0">
+  <div class="row padding10"></div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <span class="error-message padding20">
+        Your Budget seems to be empty. <br><br>
+        Click
+        <button class="btn btn-success btn-sm circle" ng-click="add()">
+          <i class="fa fa-plus"></i>
+        </button> & start afresh.
+      </span>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="tree_renderer.html">
+  <tr id="tr{{b.id}}" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+    <td data-title="'Category'" style="text-align: left; width: 40%">
+      <a ng-if="b.children" href="" ng-click="b.$$hideRows = !b.$$hideRows">
+          <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': b.$$hideRows, 'glyphicon-chevron-down': !b.$$hideRows }"></span>
+      </a>
+      <span ng-if="!b.$$edit">{{b.category.name}}</span>
+      <div ng-if="b.$$edit">
+        <select id="category"
+           ui-select2
+           name="category" ng-model="b.categoryId" ng-change="categoryChanged(b)">
+           <option ng-repeat="c in categories | orderBy:'displayName'" id="{{c.id}}" value="{{c.id}}">{{c.displayName}}</option>
+       </select>
+      </div>
+    </td>
+    <td data-title="'Period Type'" style="text-align: left; width: 30%">
+      <span ng-if="!b.$$edit">{{b.period.name}}</span>
+      <div ng-if="b.$$edit">
+        <select id="category"
+           ui-select2
+           name="periodCode" ng-model="b.periodCode" ng-change="periodChanged(b)">
+           <option ng-repeat="p in periods | orderBy:'name'" id="{{p.code}}" value="{{p.code}}">{{p.name}}</option>
+       </select>
+      </div>
+    </td>
+    <td style="text-align: right; width: 12%" data-title="'Amount'" sortable="'amount'">
+      <span ng-if="!b.$$edit" ng-class="{expense:b.category.transactionType.code== 'E', income:b.category.transactionType.code == 'I'}">{{b.amount | number : 2 }}</span>
+      <div ng-if="b.$$edit">
+        <input class="form-control" type="number" ng-model="b.amount" />
+      </div>
+    </td>
+    <td  style="text-align: left; width: 18%">
+      <div class="buttons" ng-if="!b.$$edit">
+        <button class="btn btn-default btn-sm" ng-click="edit(b)">
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-danger btn-sm" ng-click="delete(b)">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="buttons" ng-if="b.$$edit">
+        <a href="" class="btn btn-primary btn-xs" ng-click="saveBudgetItem(b)">Save</a>
+        <a href="" class="btn btn-text btn-xs" ng-click="cancel(b)">Cancel</a>
+      </div>
+    </td>
+  </tr>
+
+
+</script>
+
+<script type="text/ng-template"  id="tree_item.html">
+    /*<tr style="width:100%">
+        <td><i ng-class="!b.$$show : 'fa-folder', b.$$show : 'fa-folder-open'" ng-click="b.$$show = !b.$$show"></i></td>
+        <td>
+            {{b.category.name}}
+            <div id="expanded-data" ng-if="b.children.length > 0">
+                <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="b in b.children" ng-include="'tree_item.html'"></div>
+                </table>
+            </div>
+        </td>
+    </tr> */
+
+
+   <div id="expanded-data" ng-if="b.children.length > 0">
+      <table class="table table-striped" id="nested-table">
+              <div ng-repeat="b in b.children" ng-include="'tree_item.html'"></div>
+      </table>
+  </div>
+</script>

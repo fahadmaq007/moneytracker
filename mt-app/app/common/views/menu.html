@@ -1,0 +1,6 @@
+<div class="row" ng-controller="LoginController" style="background-color: #1D3F5B">
+  <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px">
+		<div ng-if="loggedInUser == undefined" ng-include="'common/views/notloggedinheader.html'" ></div>
+		<div ng-if="loggedInUser != undefined" ng-include="'common/views/userheader.html'" ></div>
+	</div>
+</div>

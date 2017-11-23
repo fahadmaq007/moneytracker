@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.maqs.moneytracker.model.Account" table="account">
+		<meta attribute="class-description">This class contains Account details.</meta>
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+
+		<property name="name" type="string" column="name" />
+
+		<property name="balance" type="big_decimal" column="CRNT_BAL" />
+
+		<property name="accountTypeCode" type="string" column="acct_type" />
+
+		<property name="displayable" type="boolean" column="display" />
+		
+		<property name="userId" type="long" column="user_id" />
+
+		<!-- <property name="createdOn" type="timestamp"  column="CREATED_DATE" />
+		
+		<property name="lastModifiedOn" type="timestamp"  column="MODIFIED_DATE" /> -->
+	</class>
+</hibernate-mapping>

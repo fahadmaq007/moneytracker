@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	
+	<class name="com.maqs.moneytracker.model.User" table="mt_user">
+		<meta attribute="class-description">This class contains User details.</meta>
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+
+		<property name="name" type="string" column="name" />
+
+		<property name="username" type="string" column="username" />
+		
+		<property name="password" type="string" column="password" />
+		
+		<!-- <property name="createdOn" type="timestamp"  column="CREATED_DATE" />
+		
+		<property name="lastModifiedOn" type="timestamp"  column="MODIFIED_DATE" /> -->
+	</class>
+	
+	<sql-query name="User.getRoles">
+		<return-scalar column="code" type="string"/>
+			<![CDATA[select r.ROLE_ID as code from mt_user u, mt_user_role r where u.id = r.user_id
+			and u.username = ?]]>
+	</sql-query>
+	
+	<sql-query name="User.createRole">
+		<![CDATA[insert into mt_user_role (USER_ID, ROLE_ID) values (?,?)]]>
+	</sql-query>
+</hibernate-mapping>

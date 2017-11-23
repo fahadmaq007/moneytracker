@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-lg-8">
+        <span class="panel-title h3">Data Map</span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-lg-4" style="text-align: right">
+        <button class="btn btn-success btn-sm circle" ng-click="addDataMap(selectedStatement)" shortcut="{'alt+d': addDataMap}">
+          <span class="fa fa-plus" aria-hidden="true"> </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body" style="max-height: {{contentPanelHeight / 2.2}}px;overflow-y: scroll;">
+    <div class="row">
+    <div class="col-xs-12 col-sm-6 col-lg-6" ng-repeat="chunkedArray in chunckedDataMaps" id="col_{{$index}}">
+
+      <div class="shadedrow" ng-repeat="dataMap in chunkedArray" id="col_{{$index}}_{{dataMap.searchField}}">
+
+       <div class="contentPanel" ng-if="!dataMap.$$edit">
+        <div class="row">
+         <div class="col-xs-10 col-sm-10 col-lg-10" style="padding: 5px; text-align: left">
+
+          <span>
+            if
+            <b>{{getTransactionColumnDisplayName(dataMap.searchField)}}</b>
+            contains
+            <b>{{dataMap.searchText}}</b>
+            then
+          </span>
+         </div>
+         <div class="col-xs-2 col-sm-2 col-lg-2" style="text-align: right">
+          <button class="btn btn-default btn-sm circle" ng-click="edit(dataMap)">
+            <span class="fa fa-pencil" aria-hidden="true"></span>
+          </button>
+         </div>
+        </div>
+
+        <div class="row" ng-repeat="dataField in dataMap.dataFields">
+          <div class="col-xs-2 col-sm-2 col-lg-2" style="padding: 5px; text-align: left"/>
+          <div class="col-xs-10 col-sm-10 col-lg-10" style="padding: 5px; text-align: left">
+           <span><b>
+            '{{getTransactionColumnDisplayName(dataField.propertyName)}}'
+            </b> is </span>
+            <span ng-if="dataField.propertyName == 'categoryId'"><b>{{getCategoryDisplayName(dataField.dataAsString)}} </b></span>
+            <span ng-if="dataField.propertyName == 'accountId' || dataField.propertyName == 'fromAccountId'"><b>{{getAccountDisplayName(dataField.dataAsString)}} </b></span>
+            <span ng-if="dataField.propertyName == 'description'"><b>{{dataField.dataAsString}} </b></span>
+          </div>
+        </div>
+       </div> <!-- end of contentPanel -->
+
+       <div class="contentPanel" ng-if="dataMap.$$edit" ng-include="'modules/bankstatements/editable-datamap.html'" />
+      </div><!-- end of shadedrow -->
+      </div><!-- end of col -->
+    </div>
+</div><!-- end of col -->
+</div>

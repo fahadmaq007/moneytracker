@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="panel-title h3">Data Map</span>
+  </div>
+  <div class="panel-body" style="max-height: {{contentPanelHeight / 3}}px;overflow-y: scroll;">
+     <div class="shadedrow" ng-repeat="dataMap in selectedStatement.dataMaps" id="col_{{$index}}">
+        <div class="row">
+         <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 5px; text-align: left">
+          <span>
+            if
+            <b>{{getTransactionColumnDisplayName(dataMap.searchField)}}</b>
+            contains
+            <b>{{dataMap.searchText}}</b>
+            then
+          </span>
+         </div>
+        </div>
+
+        <div class="row" ng-repeat="dataField in dataMap.dataFields">
+          <div class="col-xs-2 col-sm-2 col-lg-2" style="padding: 5px; text-align: left"/>
+          <div class="col-xs-10 col-sm-10 col-lg-10" style="padding: 5px; text-align: left">
+           <span><b>
+            '{{getTransactionColumnDisplayName(dataField.propertyName)}}'
+            </b> is </span>
+            <span ng-if="dataField.propertyName == 'categoryId'"><b>{{getCategoryDisplayName(dataField.dataAsString)}} </b></span>
+            <span ng-if="dataField.propertyName == 'accountId' || dataField.propertyName == 'fromAccountId'"><b>{{getAccountDisplayName(dataField.dataAsString)}} </b></span>
+            <span ng-if="dataField.propertyName == 'description'"><b>{{dataField.dataAsString}} </b></span>
+          </div>
+        </div>
+      </div><!-- end of shadedrow -->
+    </div>
+ </div>
+</div>

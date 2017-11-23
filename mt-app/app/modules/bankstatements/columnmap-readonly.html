@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="panel-title h3">Column Map</span>
+  </div>
+  <div class="panel-body">
+    <div id="header" class="shadedrow row" style="padding: 10px">
+    <div style="text-align: left;" class="col-xs-6 col-sm-6 col-lg-6">
+      <span><b>Property Name</b></span>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-1 col-sm-1 col-lg-1">
+      <div><i class="fa fa-arrow-right"></i></div>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-5 col-sm-5 col-lg-5">
+      <span><b>Excel Column</b></span>
+    </div>
+  </div>
+
+  <div id="tr{{c.id}}" class="shadedrow row" ng-repeat="c in selectedStatement.columnMaps" style="padding: 10px">
+    <div style="text-align: left;" class="col-xs-6 col-sm-6 col-lg-6">
+      <span ng-if="!c.$edit">{{c.propertyName}}</span>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-1 col-sm-1 col-lg-1">
+      <span class="fa fa-arrow-right" aria-hidden="true"> </span>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-1 col-sm-1 col-lg-5">
+      <span ng-if="!c.$edit">{{c.columnName}}</span>
+    </div>
+  </div>
+</div>

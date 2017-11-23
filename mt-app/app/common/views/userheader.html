@@ -1,0 +1,42 @@
+<div class="row" ng-controller="NavController">
+  <div class="hidden-xs col-sm-9 col-lg-9" style="padding: 0px">
+    <ul class="nav nav-pills">
+      <li class="nav-li" ng-repeat="navItem in navItems">
+          <a ui-sref="{{navItem.url}}" style="text-align: left">
+              <span>{{navItem.title}}</span>
+          </a>
+      </li>
+    </ul>
+  </div> 
+  <div class="visible-xs col-xs-9" style="padding: 0px"> 
+    <div class=" btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle padding" data-toggle="dropdown" aria-expanded="false" style="background: transparent;color: #69a8bb;border: 0px; padding-top: 7px">
+        <i class="fa fa-bars"></i>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li class="nav-li" ng-repeat="navItem in navItems">
+            <a ui-sref="{{navItem.url}}" style="text-align: left">
+                <span>{{navItem.title}}</span>
+            </a>
+        </li>
+      </ul>
+    </div>  
+  </div>
+
+  <div class="col-xs-3 col-sm-3 col-lg-3" style="text-align: right;padding: 0px">
+    <div class="btn-group" >
+      <button type="button" class="btn btn-default dropdown-toggle padding" data-toggle="dropdown" aria-expanded="false"
+      style="background: transparent;color: #FFF;border: 0px;height: 34px;">
+        <i class="fa fa-user"></i> Hello, {{loggedInUser.name}}
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu" style="right:0; left: inherit;margin: 0px;text-align: left" role="menu">
+
+        <li><a href="" ng-click="showPreferencesDialog()"><i class="fa fa-cog"/> User Preferences</a></li>
+        <li><a href="" ng-click="logout()"><i class="fa fa-sign-out"/> Logout</a></li>
+
+      </ul>
+    </div>
+  </div>
+</div>

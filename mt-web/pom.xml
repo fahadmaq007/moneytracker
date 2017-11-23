@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<war.name>mt</war.name>
+	</properties>
+
+	<groupId>com.maqs.mt</groupId>
+	<artifactId>mt-web</artifactId>
+	<packaging>war</packaging>
+	<version>${mt.version}</version>
+	<name>Money Tracker Web</name>
+
+	<parent>
+		<groupId>com.maqs</groupId>
+		<artifactId>mt</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.maqs.mt</groupId>
+			<artifactId>mt-impl</artifactId>
+			<version>${mt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>2.6.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_3.0_spec</artifactId>
+			<version>1.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mangofactory</groupId>
+			<artifactId>swagger-springmvc</artifactId>
+			<version>0.8.8</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.module</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<!-- <exclusion> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
+					</exclusion> -->
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>2.10.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>0.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${war.name}</finalName>
+		<plugins>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.0</version> <executions> <execution> <id>copy-dependencies</id> 
+				<phase>process-resources</phase> <goals> <goal>copy-dependencies</goal> </goals> 
+				<configuration> <outputDirectory> src/main/webapp/WEB-INF/lib </outputDirectory> 
+				</configuration> </execution> </executions> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<classpathContainers>
+						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+						<classpathContainer>org.eclipse.jdt.USER_LIBRARY/TOMCAT_7_LIB</classpathContainer>
+					</classpathContainers>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>src/main/webapp</directory>
+							<!-- the list has a default value of ** -->
+							<includes>
+								<include>**/*.xml</include>
+								<include>**/*.jsp</include>
+							</includes>
+						</resource>
+					</webResources>
+					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<archive>
+						<manifest>
+							<addClasspath>false</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.0</version>
+
+				<configuration>
+					<path>/${war.name}</path>
+					<url>${tomcat-url}</url>
+					<!-- Server settings are configured in the settings.xml -->
+					<server>${tomcat-server}</server>
+					<update>true</update>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,33 @@
+  <div class="row">
+    <div class="col-xs-1 col-sm-1 col-lg-1">
+      <button class="btn btn-primary btn-sm circle" ng-click="cancel(dataMap)">
+        <span class="fa fa-check" aria-hidden="true"> </span>
+      </button>
+    </div>
+    <div class="col-xs-1 col-sm-1 col-lg-1">
+      <span style="text-align: right;padding: 0px 5px">if </span>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-lg-3">
+      <select id="select{{dataMap.searchField}}"
+           ui-select2
+           name="select{{dataMap.searchField}}" ng-model="dataMap.searchField" required>
+           <option ng-repeat="col in transactionColumns" id="{{col.propName}}" value="{{col.propName}}">{{col.displayName}}</option>
+       </select>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-lg-2" style="text-align: right">
+      <span> contains </span>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-lg-3">
+      <input id="dataMap{{dataMap.searchText}}" class="form-control" type="text" ng-model="dataMap.searchText" />
+    </div>
+    <div class="col-xs-1 col-sm-1 col-lg-1" style="text-align: right">
+      <span> then,</span>
+    </div>
+    <div class="col-xs-1 col-sm-1 col-lg-1" style="text-align: right; float:right">
+      <button class="btn btn-success btn-sm circle" ng-click="addDataField(dataMap)">
+        <span class="fa fa-plus" aria-hidden="true"> </span>
+      </button>
+    </div>
+  </div>
+
+  <div ng-include="'modules/bankstatements/transaction-datamap.html'" />

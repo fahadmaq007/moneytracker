@@ -1,0 +1,32 @@
+<div ng-init="initChart()">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <span class="h3">Income vs Expenses</span>
+    </div>
+  </div>
+  <div  class="padding"></div>
+ <div class="row">
+  <div class="col-xs-10 col-sm-10 col-lg-5">
+
+  	<div class="btn-group" role="group" aria-label="..." style="width: 100%">
+  	  <!-- <button type="button" class="btn btn-default row-padding" style="width: 33.33%; height: 34px" ng-class="{active: selectedReport.title=='History'}" ng-click="historyReport(selectedReport)">History</button>
+      <button type="button" class="btn btn-default row-padding" style="width: 33.33%; height: 34px" ng-class="{active: selectedReport.title=='Expenses'}" ng-click="expenseReport(selectedReport)">Expense</button>
+  	  <button type="button" class="btn btn-default row-padding" style="width: 33.33%; height: 34px" ng-class="{active: selectedReport.title=='Income'}" ng-click="incomeReport()">Income</button> -->
+      <button type="button" class="btn btn-default row-padding" style="width: 33.33%; height: 34px" ng-class="{active: report.title==selectedReport.title}" ng-repeat="report in reports" ng-click="changeReport(report)">{{report.title}}</button>
+	</div>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-lg-2"></div>
+  <div class="col-xs-10 col-sm-10 col-lg-5" style="text-align: right">
+  	<div class="btn-group" role="group" aria-label="..." style="width: 100%">
+      <button type="button" class="btn btn-default row-padding" style="width: 33.33%; height: 34px" ng-class="{active: chartType.type==selectedChart.type}" ng-repeat="chartType in chartTypes" ng-click="changeChartType(chartType)">{{chartType.name}}</button>
+    </div>
+  </div>
+ </div>
+ <div ng-if="selectedReport.title == 'History'" class="row">
+   <highchart config="chartHistory" class="span10"></highchart>
+ </div>
+ <div ng-if="selectedReport.title == 'Expenses' || selectedReport.title == 'Income'" class="row">
+   <highchart config="chartIncExp" class="span10"></highchart>
+ </div>
+
+</div>

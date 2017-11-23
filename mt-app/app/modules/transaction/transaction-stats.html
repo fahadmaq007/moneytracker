@@ -1,0 +1,44 @@
+<div ng-init="initStats()" class="article">
+<div class="row">
+ <div class="col-xs-12 col-sm-12 col-lg-12">
+  <span class="h3">Income vs Expenses</span>
+ </div>
+</div>
+
+<div class="row">
+ <div class="col-xs-12 col-sm-4 col-lg-4">
+  <span class="h6">Total Income: {{(incomeExpenseTotal.incomeTotal | currency : defaultCurrency) || 0.00 }}
+  </span>
+ </div>
+
+ <div class="col-xs-12 col-sm-4 col-lg-4" style="text-align: center">
+  <span class="h6">Total Expenses: {{(incomeExpenseTotal.expenseTotal | currency : defaultCurrency) || 0.00 }}
+  </span>
+ </div>
+
+ <div class="col-xs-12 col-sm-4 col-lg-4">
+  	<span ng-if="incomeExpenseTotal.percent <= 0" class="h6 expense" style="float: right">
+    {{(incomeExpenseTotal.expenseTotal - incomeExpenseTotal.incomeTotal | currency : defaultCurrency) || 0.00 }} Overspent
+	</span>
+	<span style="float: right" ng-if="incomeExpenseTotal.percent > 0" class="h6 income">
+    {{(incomeExpenseTotal.incomeTotal - incomeExpenseTotal.expenseTotal | currency : defaultCurrency) || 0.00 }} Left
+	</span>
+ </div>
+</div> 	
+
+<div class="row">
+ <div class="col-xs-12 col-sm-12 col-lg-12">
+  	<div class="progress">
+	  <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: {{100-incomeExpenseTotal.percent}}%" aria-valuenow="{{100-incomeExpenseTotal.percent}}%">
+	    <!-- <span>{{100-incomeExpenseTotal.percent | number : 2}}% Spent</span> -->
+	  </div>
+	  <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: {{incomeExpenseTotal.percent}}%" aria-valuenow="{{incomeExpenseTotal.percent}}%">
+	  </div>
+	</div>
+ </div>
+</div>
+
+ <div class="padding6"></div>
+ 
+ <div ng-include="'modules/transaction/top-inc-exp.html'"> </div>	
+</div>

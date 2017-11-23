@@ -1,0 +1,51 @@
+<div >
+ <div class="modal-header">
+  <h2 class="modal-title">
+    Login
+  </h2>
+ </div>
+ <form name="loginForm" novalidate role="form">
+ <div class="modal-body">
+	<div class="row" style="padding-bottom: 10px">
+		<div class="col-xs-12 col-sm-12 col-lg-12">
+		<div class="alert alert-danger" ng-show="error">
+			{{errorMessage}}
+		</div>
+		</div>
+	</div>
+
+	<div class="row" style="padding-bottom: 10px">
+	   <div class="col-xs-12 col-sm-12 col-lg-12">
+		<div class="form-group">
+			<label for="username">E-mail:</label>
+			<input type="email"
+				class="form-control" id="username" name="username" ng-model="user.username" required/>
+		</div>
+	   </div>
+	</div>
+
+	<div class="row" style="padding-bottom: 10px">
+	   <div class="col-xs-12 col-sm-12 col-lg-12">
+		<div class="form-group">
+			<label for="password">Password:</label>
+			<input type="password"
+			class="form-control" id="password" name="password" ng-model="user.password" required ng-enter="login()"/>
+		</div>
+	   </div>
+	</div>
+
+	<div class="row" style="padding-bottom: 10px">
+     <div class="col-xs-7 col-sm-7 col-lg-7"></div>
+     <div class="col-xs-6 col-sm-2 col-lg-2">
+       <button type="submit" class="btn btn-text btn-lg" ng-click="cancel()">
+         Cancel
+       </button>
+ 	 </div>
+     <div class="col-xs-6 col-sm-3 col-lg-3">
+		<button type="submit" busy="{{busyMessage}}" class="btn btn-primary btn-lg" ng-click="login()">Login
+      	</button>
+	 </div>
+
+	</div>
+ </div>
+</form>

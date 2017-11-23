@@ -1,0 +1,117 @@
+<div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <span class="h3">Budgeted vs Expenses</span>
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="col-md-4">
+      <div class="input-group">
+          <select ui-select2="select2Options" class="form-control" ng-model="searchDto.budgetId" ng-change="budgetSelectionChanged()" id="source" data-placeholder="Select a budget">
+            <option ng-repeat="b in budgets" id="{{b.id}}" value="{{b.id}}">{{b.name}}</option>
+          </select>
+      </div>
+    </div>
+    <div class="col-md-3" style="text-align: right">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <div class="input-group"><input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.fromDate" min-date="minDate" max-date="today" is-open="$parent.fromDateOpened" close-text="Close" ng-click="openFromDate($event)">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3" style="text-align: right">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <div class="input-group" id="to"><input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.toDate" min-date="searchDto.fromDate" max-date="today" is-open="$parent.toDateOpened" close-text="Close" ng-click="openToDate($event)">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2" style="text-align: right">
+      <div class="input-group">
+        <button class="btn btn-primary" ng-click="showBudgetedVsSpentReport()" style="height: 34px" ng-disabled="searchDto.budgetId == null">Show Report
+        </button>
+      </div>
+    </div>
+  </div>  -->
+
+  <div  class="padding10"/>
+  <div ng-if="budgetedVsSpentReport.budgetItems.length > 0">
+    <div class="row">
+     <div class="col-xs-12 col-sm-3 col-lg-3">
+      <span></span>
+     </div>
+     <div class="col-xs-12 col-sm-9 col-lg-9">
+       <div class="row">
+        <div class="col-xs-4 col-sm-4 col-lg-4">
+          <span class="h5" style="float: left"><b>Budgeted</b></span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-lg-4" style="text-align: center">
+          <span class="h5" style="text-align: center"><b>Spent</b></span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-lg-4" style="text-align: right">
+          <span class="h5">
+            <span class="income"><b>Left</b></span><span class="normal-text"> / </span><span class="expense"><b>Overspent</b></span>
+          </span>
+        </div>
+       </div>
+     </div>  
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-3 col-lg-3">
+       <span class="h6" style="float: right"><b>Total</b></span>
+      </div>
+      <div class="col-xs-12 col-sm-9 col-lg-9">
+       <div class="shadedrow">
+        <div class="row">
+        <div class="col-xs-4 col-sm-4 col-lg-4">
+          <span class="h6" style="float: left"><b>{{totalBudgeted | number: 2}}</b></span>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-lg-4" style="text-align: center">
+          <span class="h6"><b>{{totalSpent | number: 2}}</b></span>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-lg-4" style="text-align: right">
+          <span ng-if="totalBudgeted < totalSpent" class="h6 expense" style="text-align: center"><b>{{totalSpent - totalBudgeted  | number : 2}}</b></span>
+          <span ng-if="totalBudgeted > totalSpent" class="h6 income" style="text-align: center"><b>{{totalBudgeted - totalSpent | number : 2}}</b></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="progress">
+          <div class="progress-bar progress-bar-danger progress-bar-striped active" ng-init=" percent=totalSpent / totalBudgeted * 100" style="width: {{percent}}%" aria-valuenow="{{percent}}%">
+          </div>
+          <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: {{100-percent}}%" aria-valuenow="{{100-percent}}%">
+          </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="report" name="report">
+      <div ng-repeat="budgetItem in budgetedVsSpentReport.budgetItems" ng-include="'modules/budget/budget-report-item.html'"/>
+    </div>
+    </div>
+</div>
+
+<div ng-if="!budgetedVsSpentReport.budgetItems || budgetedVsSpentReport.budgetItems.length == 0">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <span class="error-message padding20">
+        Your Budget Report seems to be empty. <br><br>
+
+        Go to <a ui-sref="transaction">Transactions</a> to create one. <br><br>
+      </span>
+    </div>
+  </div>
+</div>
+<div ng-if="!budgetItems || budgetItems.length == 0">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <span class="error-message padding20">
+        No Budget Items available. Create a couple in Budget Manager.<br><br>
+      </span>
+    </div>
+  </div>
+</div>

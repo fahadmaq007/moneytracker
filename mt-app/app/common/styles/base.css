@@ -1,0 +1,112 @@
+/* CSS responsive fixed full width header, footer, content sections by Lindsey Di Napoli of CSSgirl Dev & Design */
+
+* {
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  	box-sizing: border-box;
+}
+.container {
+	margin: 0 auto;
+	padding: 0px;
+}
+/*.header, .footer, .post {
+	padding: 1em;
+}*/
+article, aside, figure, footer, header, nav, section, details, summary {display: block;}
+.header, .footer {
+	color: #CCCCCC;
+	width: 100%;
+	z-index: 100;
+	background: #252530;
+}
+.header {
+	height: 55px;
+	vertical-align: middle;
+}
+
+/* For this demo I have the logo and tagline at 50% of the screen on all screen sizes. Most likely you may need to adjust these widths and the breakpoints for various viewport sizes. */
+.logo, .tagline {
+	width: 50%;
+	float: left;
+}
+
+.tagline {
+	text-align: right;
+}
+
+.content {
+	padding: 1em 0;
+}
+
+.post-sidebar {
+	float: left;
+	width: 70%;
+}
+
+.sidebar-right {
+	float: right;
+	width: 30%;
+	padding: 1em;
+}
+
+/* Media query to make the sidebar drop and stack below the content when the screen is smaller than 800px, and giving both the sidebar and content to the left 100% width. */
+/* Extra Small Devices, Phones */
+@media (min-width : 320px) and (max-width: 480px){
+	body {
+		font-size:75% !important;
+	}
+}
+@media (min-width : 481px) and (max-width: 767px){
+	body {
+		font-size:75% !important;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+	body {
+		font-size:80% !important;
+	}
+}
+/* Medium devices - Desktops (>992px) */
+@media (min-width: 992px) and (max-width: 1200px) {
+	body {
+		font-size:90% !important;
+	}
+}
+/* Large devices - Desktops (>1200px) */
+@media (min-width: 1201px) {
+	body {
+		font-size:90% !important;
+	}
+}
+.box-area {
+	padding: 1em;
+	background: #252530;
+	color: #CCCCCC;
+	margin-top: 1.2em;
+}
+
+.footer {
+	height: 50px;
+	vertical-align: bottom;
+}
+
+/* Fixed positioning - this is where the magic happens! */
+
+/* You will need to add a bottom padding ot your body tag that is equal (or great then) the height of your footer */
+
+/* The first element that comes after your header will need a padding top equal to the height of your header. In this example it's a <section> tag. You may need to update the tag here to reflect your own code */
+section:first-of-type {
+	padding-top: 55px;
+	padding-bottom: 50px;
+}
+
+/* Tell the header and footer to stay put. If you have any absolutely or other fixed elements on your site, a z-index may be needed! */
+.header, .footer {
+	position: fixed;
+	width: 100%;
+}
+
+/* Tell the footer to always stay at the bottom */
+.footer {
+	bottom: 0;
+}

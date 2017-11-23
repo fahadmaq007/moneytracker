@@ -1,0 +1,68 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="panel-title h3">Column Map</span>
+  </div>
+  <div class="panel-body">
+    <div id="header" class="shadedrow row">
+    <div style="text-align: left;" class="col-xs-3 col-sm-3 col-lg-3">
+      <span><b>Property Name</b></span>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-2 col-sm-2 col-lg-2">
+      <div><i class="glyphicon glyphicon-arrow-right"></i></div>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-3 col-sm-3 col-lg-3">
+      <span><b>Excel Column</b></span>
+    </div>
+
+    <div class="col-xs-4 col-sm-4 col-lg-4 buttons">
+      <button class="btn btn-success btn-sm circle" ng-click="addColumnMap(selectedStatement)" shortcut="{'alt+c': addColumnMap}">
+        <span class="fa fa-plus" aria-hidden="true"> </span>
+      </button>
+    </div>
+  </div>
+
+  <div id="tr{{c.id}}" class="shadedrow row" ng-repeat="c in selectedStatement.columnMaps">
+    <div style="text-align: left;" class="col-xs-3 col-sm-3 col-lg-3">
+      <span ng-if="!c.$$edit">{{c.propertyName}}</span>
+      <div class="input-group" ng-if="c.$$edit">
+        <select id="select{{c.propertyName}}"
+           ui-select2
+           name="select{{c.propertyName}}" ng-change="columnMapChanged(c)" class="form-control" ng-model="c.$$selectedCol" required>
+           <option ng-repeat="col in transactionColumns" id="{{col.propName}}" value="{{col}}">{{col.displayName}}</option>
+       </select>
+      </div>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-2 col-sm-2 col-lg-2">
+      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"> </span>
+    </div>
+
+    <div style="text-align: center;" class="col-xs-2 col-sm-2 col-lg-2">
+      <span ng-if="!c.$$edit">{{c.columnName}}</span>
+      <div class="input-group" ng-if="c.$$edit">
+        <select id="select{{c.columnName}}"
+           ui-select2
+           name="select{{c.columnName}}" class="form-control" ng-model="c.columnName" required>
+           <option ng-repeat="excelCol in excelColumns" id="{{excelCol}}" value="{{excelCol}}">{{excelCol}}</option>
+       </select>
+      </div>
+    </div>
+
+    <div  style="text-align: left;" class="col-xs-4 col-sm-4 col-lg-4">
+      <div class="buttons" ng-if="!c.$$edit">
+        <button class="btn btn-default btn-sm circle" ng-click="edit(c)">
+          <span class="fa fa-pencil" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-danger btn-sm circle" ng-click="removeColumnMap(c)">
+          <span class="fa fa-trash" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="buttons" ng-if="c.$$edit">
+        <a href="" class="btn btn-primary btn-xs" ng-click="cancel(c)">Done</a>
+      </div>
+    </div>
+   </div>
+ </div>
+</div>

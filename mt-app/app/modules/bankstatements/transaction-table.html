@@ -1,0 +1,172 @@
+<form id="form_tr" name="form_tr" novalidate>
+<div class="contentPanel">
+  <div class="row">
+   <div class="col-xs-12 col-sm-10 col-lg-10">
+     <span class="h1">Import Preview</span>
+   </div>
+
+   <div class="col-xs-6 col-sm-2 col-lg-2">
+      <button class="btn btn-primary btn-lg" 
+      ng-disabled="!(selectedTransactions.length > 0 && form_tr.$valid)" 
+      ng-click="importTransactions()" busy="Please wait..." busy-when-url="store" >
+        <i class="fa fa-floppy-o"></i> Save All
+      </button>
+  </div>
+ </div>
+
+ <!-- <div ng-if="transactions.length <= 0" class="row">
+  <div class="col-xs-12 col-sm-6 col-lg-6">
+   <div class="alert alert-warning" role="alert" style="height: 34px;width: 100%" >
+    <strong>Warning!</strong> No data found
+   </div>
+  </div>
+ </div> -->
+
+ <div class="padding6"></div> 
+
+ <div ng-if="transactions.length > 0">
+  
+  <table ng-table="importTableParams" class="table table-bordered table-hover table-condensed">
+  <thead>
+    <tr style="height: 34px">
+      <th>
+        <div>
+          <button class="btn-text" 
+            ng-class="{'selected': allSelected, 'unselected': !allSelected}" 
+            ng-click="selectAll()">
+            <i class="fa fa-check check"></i>
+          </button>
+        </div>
+      </th>
+      <th>
+        <div>Type</div>
+      </th>
+      <th class="sortable" style="text-align: center" ng-class="{
+          'sort-asc': importTableParams.isSortBy('onDate', 'asc'),
+          'sort-desc': importTableParams.isSortBy('onDate', 'desc')
+        }"
+          ng-click="importTableParams.sorting({'onDate' : importTableParams.isSortBy('onDate', 'asc') ? 'desc' : 'asc'})">
+          <div><i class="glyphicon glyphicon-user"></i> Date</div>
+      </th>
+
+      <th style="text-align: center" >
+          <div><i class="glyphicon glyphicon-home"></i> Category</div>
+      </th>
+      <th style="text-align: center" >
+          <div><i class="glyphicon glyphicon-home"></i> Account</div>
+      </th>
+      <th class="sortable" style="text-align: center" ng-class="{
+          'sort-asc': importTableParams.isSortBy('amount', 'asc'),
+          'sort-desc': importTableParams.isSortBy('amount', 'desc')
+        }"
+          ng-click="importTableParams.sorting({'amount' : importTableParams.isSortBy('amount', 'asc') ? 'desc' : 'asc'})">
+          <div>{{defaultCurrency}} Amount</div>
+      </th>
+      <th class="sortable" style="text-align: center" ng-class="{
+          'sort-asc': importTableParams.isSortBy('description', 'asc'),
+          'sort-desc': importTableParams.isSortBy('description', 'desc')
+        }"
+          ng-click="importTableParams.sorting({'description' : importTableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'})">
+          <div><i class="glyphicon glyphicon-align-justify"></i> Description</div>
+      </th>
+      <th style="text-align: center">
+        <!-- <span class="notify-sm" aria-hidden="true" 
+        tooltip="Success / Failure">
+          <i class="fa fa-thumbs-up success"></i>
+        </span> -->
+      </th>
+    </tr>
+</thead>
+  <tbody>
+  <tr id="tr{{t.id}}" ng-repeat="t in transactions" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+    
+    <td style="text-align: center; width: 4%">
+      <div>
+        <button class="btn-text"
+        ng-class="{'selected': t.$$selected, 'unselected': !t.$$selected}" 
+        ng-click="select(t)">
+          <i class="fa fa-check check"></i>
+        </button>
+      </div>      
+    </td>
+
+    <td style="text-align: center; width: 4%">
+      <span ng-if="t.category.transactionType.code== 'E'" class="btn btn-danger btn-sm circle tran-type" tooltip="Expense">
+        <i class="glyphicon glyphicon-export"/>
+        <!-- <i class="fa fa-level-up"></i> -->
+      </span>
+      <span ng-if="t.category.transactionType.code== 'I'" class="btn btn-success btn-sm circle tran-type" tooltip="Income">
+        <i class="glyphicon glyphicon-import"/>
+        <!-- <i class="fa fa-level-down"></i> -->
+      </span>
+      <span ng-if="t.category.transactionType.code== 'T'" class="btn btn-warning btn-sm circle tran-type" tooltip="Transfer">
+        <i class="glyphicon glyphicon-transfer"/>
+        <!-- <i class="fa fa-exchange"></i> -->
+      </span>
+    </td>
+
+    <td style="text-align: left; width: 11%" data-title="'Date'" sortable="'onDate'">
+      <span ng-if="!t.$$edit">
+        <a href="" class="btn-text" ng-click="edit(t)">{{t.dateString}}</a>
+      </span>
+      <div class="input-group" ng-if="t.$$edit">
+        <input id="t{{t.id}}onDate" type="text" datepicker-popup="{{selectedStatement.dateFormat}}" class="form-control" data-ng-model="t.onDate" min-date="minDate" is-open="t.$dateOpened" datepicker-options="dateOptions" close-text="Close" focus ng-click="openDate($event, t)" required>
+      </div>
+    </td>
+
+    <td data-title="'Category'" sortable="'category.name'" style="text-align: left; width: 20%">
+      <span ng-if="!t.$$edit">{{t.category.name}}</span>
+      <div ng-if="t.$$edit">
+        <select id="category"
+           ui-select2
+           name="category" ng-model="t.categoryId" ng-change="categoryChanged(t)" required>
+           <option ng-repeat="c in categories | orderBy:'displayName'" id="{{c.id}}" value="{{c.id}}">{{c.displayName}}</option>
+       </select>
+      </div>
+    </td>
+    <td data-title="'Account'" sortable="'account'" style="text-align: left; width: 12%">
+      <span ng-if="!t.$$edit">{{t.account.name}}</span>
+      <div ng-if="t.$$edit">
+        <select id="account"
+           ui-select2
+           name="account" ng-model="t.accountId" ng-change="accountChanged(t)" required>
+           <option ng-repeat="a in accounts | orderBy:'name'" id="{{a.id}}" value="{{a.id}}">{{a.name}}</option>
+       </select>
+      </div>
+    </td>
+
+    <td style="text-align: right; width: 13%" data-title="'Amount'" sortable="'amount'">
+      <span ng-if="!t.$$edit" ng-class="{expense:t.category.transactionType.code== 'E', income:t.category.transactionType.code == 'I', transfer: t.category.transactionType.code == 'T'}">{{(t.amount | currency : defaultCurrency) || 0.00 }}</span>
+      <div ng-if="t.$$edit">
+        <input id="t{{t.id}}_amount" name="t{{t.id}}_amount" class="form-control" type="number" ng-model="t.amount" step="50" required />
+      </div>
+    </td>
+
+    <td style="text-align: left; width: 32%" class="long-text" data-title="'Description'" sortable="'description'">
+      <span ng-if="!t.$$edit">{{t.description}}</span>
+      <div ng-if="t.$$edit">
+        <input id="t{{t.id}}desc" class="form-control" type="text" ng-model="t.description" />
+      </div>
+    </td>
+    <td  style="text-align: center; width: 3%">          
+     <div ng-if="t.messageType == 'err' || t.messageType == 'warn'">
+      <span ng-class="{danger: t.messageType == 'err', warning:t.messageType == 'warn'}">
+        <i tooltip="{{t.message}}" class="fa fa-exclamation-triangle notify"></i>
+      </span>
+     </div> 
+     <div ng-if="t.messageType == 'success'">
+      <span class="success">
+        <i ng-if="t.message == 'Ok to Save'" tooltip="{{t.message}}" class="fa fa-thumbs-up notify"></i>
+        <i ng-if="t.message != 'Ok to Save'" tooltip="{{t.message}}" class="fa fa-check notify"></i>
+      </span>
+     </div>      
+    </td>
+
+  </tr>
+  </tbody>
+  </table>
+
+
+ </div>
+</div>
+</form>

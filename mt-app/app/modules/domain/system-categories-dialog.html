@@ -1,0 +1,30 @@
+<div>
+ <div class="modal-header">
+  <h2 class="modal-title">
+    Import System Categories
+  </h2>
+ </div>
+ <div class="modal-body scrollArea" style="height: auto">
+  <div class="row" style="padding-bottom: 10px">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+    <div class="alert alert-danger" ng-show="error">
+      There was a problem creating user. Please try again.
+    </div>
+    </div>
+  </div>
+
+  <div ng-include="'modules/domain/system-categories-tree.html'"></div>
+ </div>
+
+ <div class="modal-footer">
+  <div class="col-sm-6 col-lg-6"></div>
+  <div class="col-xs-6 col-sm-3 col-lg-3">
+       <button type="submit" class="btn btn-text btn-lg" ng-click="cancel()">
+         Cancel
+       </button>
+   </div>
+  <div class="col-xs-6 col-sm-3 col-lg-3">
+    <button type="submit" busy="{{busyMessage}}" class="btn btn-primary btn-lg" ng-click="import()" ng-disabled="selectedCategories.length <= 0">Import {{selectedCategories.length}}
+    </button>
+  </div>
+</div>  

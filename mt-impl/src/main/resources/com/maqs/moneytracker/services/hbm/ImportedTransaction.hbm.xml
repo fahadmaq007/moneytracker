@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.maqs.moneytracker.model.ImportedTransaction" table="imported_transaction">
+		<meta attribute="class-description">This class contains Imported Transaction details.</meta>
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+
+		<property name="transactionId" type="long" column="TRAN_ID" />
+				
+		<property name="checksum" type="string" column="CHECKSUM" />
+		
+		<property name="userId" type="long" column="user_id" />
+	</class>
+	
+	
+</hibernate-mapping>

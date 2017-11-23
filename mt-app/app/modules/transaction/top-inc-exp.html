@@ -1,0 +1,39 @@
+<div class="row">
+ <div class="col-xs-12 col-sm-6 col-lg-6">
+  <ul class="list-group">
+     <a href="" class="list-group-item list-group-item-success">
+      <h4>Top {{topIncomeData.length}} Income(s)</h4>
+    </a>
+    <li class="list-group-item" id="exp{{t.catId}}" ng-repeat="t in topIncomeData" style="padding: 8px">
+      <div class="row">
+      	<span class="h6 income" style="float: left">{{showCategoryFromDto(t)}}</span>
+      	<span class="h6 income" style="float: right">{{t.amount / incomeTotal * 100 | number : 2}}% - {{(t.amount | currency : defaultCurrency) || 0.00 }}</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{{t.amount / incomeTotal * 100}}" aria-valuemin="0" aria-valuemax="100" style="width: {{t.amount / incomeTotal * 100}}%">
+          <!-- <span>{{t.amount / incomeTotal * 100 | number : 2}}% - {{(t.amount | currency : defaultCurrency) || 0.00 }}</span> -->
+        </div>
+      </div>
+    </li>
+  </ul>
+ </div>
+
+ <div class="col-xs-12 col-sm-6 col-lg-6">
+	<ul class="list-group">
+     <a href="" class="list-group-item list-group-item-danger">
+      <h4>Top {{topExpensesData.length}} Expense(s)</h4>
+    </a>
+    <li class="list-group-item" id="exp{{t.catId}}" ng-repeat="t in topExpensesData" style="padding: 8px">
+      <div class="row">
+      	<span class="h6 expense" style="float: left">{{showCategoryFromDto(t)}}</span>
+      	<span class="h6 expense" style="float: right">{{t.amount / expenseTotal * 100 | number : 2}}% - {{(t.amount | currency : defaultCurrency) || 0.00 }}</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="{{t.amount / expenseTotal * 100}}" aria-valuemin="0" aria-valuemax="100" style="width: {{t.amount / expenseTotal * 100}}%">
+          <!-- <span>{{t.amount / expenseTotal * 100 | number : 2}}% - {{(t.amount | currency : defaultCurrency) || 0.00 }}</span> -->
+        </div>
+      </div>
+    </li>
+  </ul>
+ </div>
+</div>	

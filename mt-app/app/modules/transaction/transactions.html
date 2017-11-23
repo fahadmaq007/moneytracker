@@ -1,0 +1,26 @@
+<div class="contentPanel" ng-init="init()">
+  <div class="row" style="padding-top: 5px">
+   <div class="col-xs-12 col-sm-12 col-lg-12">
+     <h2 class="h1">Transactions</h2>
+     <hr/>
+   </div>
+  </div>
+  <div ng-include="'modules/transaction/search.html'"/>
+  <div class="padding6"></div>
+  
+  <div class="row">
+   <div class="col-xs-12 col-sm-12 col-lg-12">    
+    <div ng-include="'modules/transaction/transaction-table.html'"/>
+   </div>
+  </div> 
+  
+  <div class="padding10"></div>
+
+  <div class="row">
+   <div class="col-xs-12 col-sm-12 col-lg-12">    
+    <div ng-include="'modules/transaction/transaction-stats.html'" />
+   </div>
+  </div>    
+    
+  <div class="padding10"></div>
+</div>

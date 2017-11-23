@@ -1,0 +1,39 @@
+<div class="row tb-padding5" ng-init="init()">
+ <div class="padding6"></div>
+  
+ <div class="row">
+  <div class="col-xs-12 col-sm-12 col-lg-12">
+    <div class="article">
+    <div class="row">
+     <div class="col-xs-12 col-sm-6 col-lg-8">
+       <span class="h1" ng-if="$show == 'manager'">Manage </span>
+       <span class="h1" ng-if="$show == 'import'">Import </span>
+       <span class="h1"> Statement</span>
+     </div>
+     <div class="col-xs-12 col-sm-6 col-lg-4" style="text-align: right">
+      <div class="btn-group" role="group" aria-label="..." style="width: 100%;">
+        <button type="button" class="btn btn-default" style="width: 50%; height: 34px" ng-class="{active: $show == 'import'}" ng-click="$show = 'import'">Import</button>
+        <button type="button" class="btn btn-default"  style="width: 50%; height: 34px" ng-class="{active: $show == 'manager'}" ng-click="$show = 'manager'">Manager</button>
+      </div>
+     </div>
+    </div>
+    <hr/>
+
+    <div class="contentPanel">
+      <div ng-if="$show == 'import'" ng-include="'modules/bankstatements/import.html'"></div>
+
+      <div ng-if="$show == 'manager'" ng-include="'modules/bankstatements/manager.html'"></div>
+    </div>
+  </div>
+ </div>
+ </div>
+ 
+  <div class="padding6"></div>
+
+  <div class="row">
+   <div class="col-xs-12 col-sm-12 col-lg-12">
+    <div ng-if="$show == 'import' && transactions.length > 0" class="article" style="float: left;" ng-include="'modules/bankstatements/transaction-table.html'"></div>
+   </div>
+  </div>  
+</div>
+<div class="padding6"></div>

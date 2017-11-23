@@ -1,0 +1,42 @@
+<!-- <form id="form_tr_search" name="form_tr_search" novalidate> -->
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-lg-2">
+      <div class="input-group">
+        <a href="" class="input-group-addon" ng-click="prevMonth()"><i class="fa fa-arrow-left" tooltip="Go to previous month"></i></a>
+        <div class="input-group">
+          <input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.fromDate" min-date="minDate" is-open="$parent.fromDateOpened"
+          close-text="Close" ng-click="openFromDate($event)" placeholder="From Date">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-lg-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <div class="input-group" id="to">
+          <input type="text" datepicker-popup="{{dateFormat}}" class="form-control" data-ng-model="searchDto.toDate" min-date="searchDto.fromDate" is-open="$parent.toDateOpened"
+          close-text="Close" ng-click="openToDate($event)" >
+          <a href="" class="input-group-addon" ng-click="nextMonth()"><i class="fa fa-arrow-right" tooltip="Go to next month"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-lg-2">
+      <div class="input-group">
+          <select ui-select2="select2Options" class="form-control" id="source" data-placeholder="Select a budget" ng-model="searchDto.budgetId" ng-change="budgetSelectionChanged()" >
+            <option ng-repeat="b in budgets" id="{{b.id}}" value="{{b.id}}">{{b.name}}</option>
+          </select>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-lg-2">
+      <button class="btn btn-primary" ng-click="showBudgetedVsSpentReport()" style="height: 34px" ng-disabled="searchDto.budgetId == null" style="height: 34px;width:100%">Show Report
+      </button>
+    </div>
+  </div>
+</div>
+<!-- </form> -->
+
+
+<!-- <td style="margin: 5px">
+          <a href="" editable-text="budgetName" e-name="budgetName" onbeforesave="newBudget($data)" e-required>New</a>
+        </td> -->

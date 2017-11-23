@@ -1,0 +1,39 @@
+<div class="search-container">
+    <div class="panel panel-primary" style="height: {{contentPanelHeight}}px">
+      <div class="panel-heading">
+        <h3 class="panel-title">Search here...</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+                From Date: <input type="date" class="form-control" id="fromDate" name="fromDate" ng-model="fromDate"
+           placeholder="Select from date" min="2013-01-01" max="2015-01-01" required />
+        </div>
+        <div class="form-group">
+            To Date: <input type="date" class="form-control" id="toDate" name="toDate" ng-model="toDate" datepicker-popup="dd-MMMM-yyyy" placeholder="Select to date" min="2013-01-01" max="{{today}}" required />
+        </div>
+        <div class="form-group">
+            Category:
+            <select style="width:100%" ui-select2="select2Options" multiple ng-model="selectedCategories" id="source"  data-placeholder="Pick a category">
+                <optgroup label="Expenses">
+                    <option value="-1">All</option>
+                    <option ng-repeat="cat in categories" value="{{cat.id}}">cat.name</option>
+                </optgroup>
+           </select>
+        </div>
+
+        <div class="form-group">
+            Account:
+            <select id="accounts"
+             class="form-control selectpicker"
+             name="accounts" ng-model="accounts">
+             <option ng-repeat="account in accounts" id="{{account.id}}" value="{{account.name}}">{{account.name}}</option>
+             </select>
+        </div>
+    </div>
+
+    <div style="text-align: right; padding-right: 5px">
+      <a href="" class="btn btn-default">Reset</a>
+      <a href="" class="btn btn-primary">Search</a>
+   </div>
+  </div>
+</div>

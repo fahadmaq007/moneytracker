@@ -1,0 +1,51 @@
+<div class="row" ng-init="showSetupProgress()" >
+ <div class="col-xs-12 col-sm-12 col-lg-12">
+ <div class="article">
+  <div class="row">
+    <div class="col-xs-8 col-sm-6 col-lg-6">
+       	<span class="h1">Setup Progress</span>
+    </div>
+    <div class="col-xs-4 col-sm-6 col-lg-6" style="text-align: right">
+      <!-- <button class="btn btn-text" ng-model="show" ng-click="show = !show">Don't Show It
+      </button> -->
+    </div>
+  </div>
+
+  <div class="row vcenter">
+  	<div class="col-xs-4 col-sm-2 col-lg-2" style="text-align: center">
+	  		<progress-arc
+	            size="75"
+	            stroke="#60D59C"
+	            stroke-width="10"
+	            complete="activitiesCompletion"
+	            background="#CCC"
+	            counter-clockwise="">
+	        </progress-arc>
+	        <div class="control">
+	            <label for="progress">Complete</label>
+	            <span>{{activitiesCompletion * 100 | number: 0}}%</span>
+	        </div>
+    </div>   
+    <div class="col-xs-8 col-sm-10 col-lg-10">  
+      <div class="row">	   
+	    <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="act in setupActivities">
+	     <div class="row vcenter">	   
+	      <div class="col-xs-2 col-sm-2 col-lg-2">
+	    	<span class="bullet" 
+	    	ng-class="{enabled: act.done, disabled: !act.done}">
+	    		<i class="fa fa-check"></i>
+	    	</span>
+	      </div>
+	      <div class="col-xs-10 col-sm-10 col-lg-10">
+		    <span class="h6 warning">{{act.activity}}</span>
+		    <br><span class="h6 primary">{{act.result}}</span>
+		  </div> 
+		 </div>  		    
+	    </div>	    
+	  </div> 
+	</div>    	  
+  </div>  
+
+  </div>    
+ </div>
+</div>

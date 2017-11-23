@@ -1,0 +1,40 @@
+<div class="row" ng-repeat="dataField in dataMap.dataFields">
+	<div class="col-xs-1 col-sm-1 col-lg-1" style="padding: 5px; text-align: right" />
+	<div class="col-xs-1 col-sm-1 col-lg-1" style="padding: 5px; text-align: right">
+		<span>Set </span>
+	</div>
+	<div class="col-xs-3 col-sm-3 col-lg-3">
+	 <select id="select{{dataField.propertyName}}"
+	     ui-select2
+	     name="select{{dataField.propertyName}}" ng-model="dataField.propertyName" ng-change="dataFieldChanged(dataField)" required>
+	     <option ng-repeat="col in transactionColumns" id="{{col.propName}}" value="{{col.propName}}">{{col.displayName}}</option>
+	 </select>
+	</div>
+	<div class="col-xs-1 col-sm-1 col-lg-1" style="padding: 5px; text-align: right">
+		<span> as </span>
+	</div>
+	<div class="col-xs-4 col-sm-4 col-lg-4">
+		<div ng-if="dataField.propertyName == 'categoryId'">
+	    <select id="dataFieldCategory"
+	       ui-select2
+	       name="dataFieldCategory" ng-model="dataField.dataAsString" ng-change="dataFieldChanged(dataField)" required>
+	       <option ng-repeat="c in categories | orderBy:'displayName'" id="{{c.id}}" value="{{c.id}}" >{{c.displayName}}</option>
+	   </select>
+	 </div>
+	 <div ng-if="dataField.propertyName == 'accountId' || dataField.propertyName == 'fromAccountId'">
+			<select id="dataFieldAccount"
+	       ui-select2
+	       name="dataFieldAccount" ng-model="dataField.dataAsString" ng-change="dataFieldChanged(dataField)" required>
+	       <option ng-repeat="a in accounts | orderBy:'displayName'" id="{{a.id}}" value="{{a.id}}">{{a.displayName}}</option>
+	   </select>
+	 </div>
+	 <div ng-if="dataField.propertyName == 'description'">
+		<input id="dataField{{dataField.propertyName}}" class="form-control" type="text" ng-model="dataField.dataAsString" ng-change="dataFieldChanged(dataField)" />
+	 </div>
+	</div>
+	<div class="col-xs-2 col-sm-2 col-lg-2" style="padding: 5px; text-align: right">
+		<button class="btn btn-danger btn-sm circle" ng-click="deleteDataField(dataField)">
+		  <span class="fa fa-trash" aria-hidden="true"> </span>
+		</button>
+	</div>
+</div>

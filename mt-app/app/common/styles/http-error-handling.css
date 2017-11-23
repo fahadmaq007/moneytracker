@@ -1,0 +1,34 @@
+/* display error message styled in red */
+.http-error-message {
+    background-color: #fbbcb1;
+    border: 1px #e92d0c solid;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 10px;
+    white-space: nowrap; 
+    width: 12em; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    margin-bottom: 1px;
+}
+
+.http-error-validation-message {
+    background-color: #fbbcb1;
+    border: 1px #e92d0c solid;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 10px;
+    width: 702px;
+    margin-bottom: 1px;
+}
+
+/* display success message styled in green */
+.http-success-message {
+    background-color: #adfa9e;
+    border: 1px #25ae09 solid;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 10px;
+    width: 702px;
+    margin-bottom: 1px;
+}
